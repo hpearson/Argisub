@@ -1,0 +1,508 @@
+ randomize timer				' seed random numbers
+ option TEXTHEIGHT, 28			' Default is 26
+ option TEXTWIDTH,  40			' Default is 38
+ 
+ Month = 1					    ' Number of times
+ goto FirstScreen
+ 
+ 
+ 
+ 
+ 
+ 
+Credits:	datafile Pics\Credits.bin,bin
+Jam:		datafile Pics\Jam.bin,bin
+CreditsColor:
+			DATAINT	$0446,$0446,$0668,$068A,$08AC,$068C,$0224,$0002
+			DATAINT	$0246,$0422,$066C,$0228,$0248,$086C,$0000,$0000
+JamColor:
+			DATAINT	$0000,$0000,$0EEE,$0CA2,$0440,$0420,$02EE,$0024
+			DATAINT	$0286,$0066,$0042,$0666,$0442,$0864,$0068,$0000			
+			
+			
+	
+palletted: 	DATAINT	$0000,$0CCC,$0000,$0A44,$0C42,$0C44,$0AAA,$0666
+			DATAINT	$0A42,$022A,$0448,$020E,$042A,$04EE,$00EE,$0000
+ 
+ 
+draw:
+ i=128
+ for y=0 to 27
+ 	for x=0 to 39
+ 		drawtile i,x,y
+ 		i++
+ 	next
+ next
+ enable screen
+ return 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+FirstScreen: 
+ cls
+ sleep 30
+ print "Welcome GGJ 2016!"
+ print 
+ print "Theme: ";
+ 	ink 1: 
+ 	print "Ritual"
+	ink 0
+ print 
+ print 
+ print "Game name: Argisub"
+ 
+ locate 21, 0
+ print "Name"
+ print "(Press start to confirm)"
+ locate 21,4
+ input PlayerName$
+ if PlayerName$ = " " then
+ 	goto FirstScreen
+ endif
+ if PlayerName$ = "  " then
+ 	goto FirstScreen
+ endif
+ if PlayerName$ = "   " then
+ 	goto FirstScreen
+ endif
+ if PlayerName$ = "    " then
+ 	goto FirstScreen
+ endif
+ goto JamLogo
+ 
+JamLogo:
+ disable screen
+ loadtiles Jam,1120,128
+ pallettes JamColor,0,0,16
+ gosub draw
+ sleep 200
+ pallettes palletted,0,0,16
+ goto SecondScreen
+ 
+SecondScreen:
+ cls
+ sleep 30
+ print "The year is 1977"
+ print
+ print 
+ print "When humans first made contact "
+ print "with the Argisub"
+
+ locate 23, 0
+ print "Press any button to continue"
+ while joypad()=0: wend
+	waitpadup 0
+ goto ThirdScreen
+ 
+ThirdScreen:
+ cls
+ sleep 30
+ print "They demand monthly communication or"
+ print "they tradeing will be ceased"
+ print
+ print 
+ print 
+ print 
+ print "     For reasons unknown"
+
+ locate 23, 0
+ print "Press any button to continue"
+ while joypad()=0: wend
+	waitpadup 0
+ goto FourthScreen
+ 
+ 
+FourthScreen:
+ cls
+ sleep 30
+ print "You have been stationed in a remote"
+ print "desolate place in space"
+ print
+ print 
+ print 
+ print 
+ print "to perform this most important monthly"
+ print "task"
+ locate 23, 0
+ print "Press any button to continue"
+ while joypad()=0: wend
+	waitpadup 0
+ goto FifthScreen
+ 
+ 
+ 
+ 
+ 
+FifthScreen:
+ cls
+ sleep 30
+ print "The Argisub communicate with"
+ print "oscillating frequencies"
+ print 
+ print 
+ print 
+ print 
+ print "You must recipricate back"
+ print "their frequency"
+ print
+ print
+ print
+ print "To maintain good relations"
+ 
+ locate 23, 0
+ print "Press A to continue"
+ while joypad()=0: wend
+	waitpadup 0
+	print "press any key"
+ goto Mainmenu
+ 
+ 
+ 
+ 
+Mainmenu:
+ cls
+ sleep 30
+ print "Main Menu"
+ print "A) ";
+ ink 5
+ print "Easy"
+ ink 0
+ print "B) ";
+ ink 6
+ print "Medium"
+ ink 0
+ print "C) ";
+ ink 7 
+ print "Hard" 
+ ink 0
+
+ locate 23, 0
+ while 1
+	 JoyStickInput=joypad(0)
+	 'AButton
+	 if JoyStickInput = 64 then
+	 	goto EasyStart
+	 endif	
+	 
+	 'BButton
+	 if JoyStickInput = 16 then
+	 	goto MediumStart
+	 endif
+	 
+	 'CButton
+	 if JoyStickInput = 32 then
+	 	goto HardStart
+	 endif		
+ wend
+
+
+
+
+
+
+
+EasyStart:
+ cls
+ Difficulty = 1
+ who = 0 						   'Start listning their frequency
+ YourSound = 500				   'What you start on
+ TheirSound = 20
+ TheirSound = TheirSound * rnd(50) 'generate their number
+ if TheirSound = 0 then
+ 	TheirSound = 50
+ endif
+ goto GameLoop
+
+MediumStart:
+ cls
+ Difficulty = 2
+ who = 0 						   'Start listning their frequency
+ YourSound = 500				   'What you start on
+ TheirSound = 5
+ TheirSound = TheirSound * rnd(200) 'generate their number
+ if TheirSound = 0 then
+ 	TheirSound = 5
+ endif
+ goto GameLoop
+
+HardStart:
+ cls
+ Difficulty = 3
+ who = 0 						   'Start listning their frequency
+ YourSound = 500				   'What you start on
+ TheirSound = rnd(1000) 		   'generate their number
+ if TheirSound = 0 then
+ 	TheirSound = 1
+ endif
+ goto GameLoop
+
+
+
+GameLoop:
+ locate 0, 0
+ if Difficulty = 1 then
+ 	ink 5
+ 	print "(Easy)"
+ endif
+ if Difficulty = 2 then
+ 	ink 6
+ 	print "(Medium)"
+ endif 
+ if Difficulty = 3 then
+ 	ink 7
+ 	print "(Hard)"
+ endif  
+ ink 0
+ print
+ print "It is the ";
+ print Month;
+ print " month.";
+ print
+ print
+ print
+ print "Match the frequency:"
+ print
+ print
+ print
+ print
+ if who = 1 then
+	ink 10
+ 	print "Listening to your frequency   "
+ 	print
+ 	print
+ 	print "                -->     "
+ 	psgvol 0,0
+ 	psgvol 1,10
+ endif
+ 
+ if who = 0 then
+	ink 7
+	print "Listening to their frequency    "
+	print
+	print
+	print "                <--      "
+ 	psgvol 0,10
+ 	psgvol 1,0
+ endif
+
+ ink 0
+ print
+ print
+ print
+ print "                ";
+ print YourSound; 
+ print "    "
+
+
+ locate 24, 0
+ print "(Press start to confirm)"
+
+ psg 0,TheirSound
+ psg 1,YourSound
+ 
+ while 1
+	 JoyStickInput=joypad(0)
+	 
+	 'StartButton
+	 if JoyStickInput = 128 then
+	 	goto EndGame
+	 endif
+	 
+	 'UpButton
+	 if JoyStickInput = 257 then
+	 	goto UpButton
+	 endif
+	 
+	 'DownButton
+	 if JoyStickInput = 514 then
+	 	goto DownButton
+	 endif
+	 
+	 'AButton
+	 if JoyStickInput = 64 then
+	 	goto AButton
+	 endif	 
+	 
+	 'CButton
+	 if JoyStickInput = 32 then
+	 	goto CButton
+	 endif	 	
+ wend
+ 
+UpButton:
+  if Difficulty = 1 then
+ 	YourSound = YourSound + 20;
+ endif
+ if Difficulty = 2 then
+ 	YourSound = YourSound + 5;
+ endif
+ if Difficulty = 3 then
+ 	YourSound = YourSound + 1;
+ endif
+ 'Set input limiters
+ if YourSound > 1000 then
+ 	YourSound = 1000
+ endif	
+ sleep 10
+ goto GameLoop 
+
+DownButton:
+ if Difficulty = 1 then
+ 	YourSound = YourSound - 20;
+ 	if YourSound < 20 then
+		YourSound = 20
+	endif	
+ endif
+ if Difficulty = 2 then
+ 	YourSound = YourSound - 5;
+ 	if YourSound < 5 then
+		YourSound = 5
+	endif	
+ endif	
+ if Difficulty = 3 then
+ 	YourSound = YourSound - 1;
+ 	if YourSound < 1 then
+		YourSound = 1
+	endif	
+ endif	 
+ sleep 10
+ goto GameLoop 
+ 
+AButton:
+ Who = 0
+ goto GameLoop 
+
+CButton:
+ Who = 1
+ goto GameLoop 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+EndGame:
+ cls
+ sleep 30
+ psgvol 0,0
+ psgvol 1,0
+
+ if YourSound = TheirSound then
+ 	if Difficulty = 1 then
+ 		ink 5
+ 		print "(Easy)"
+ 	endif
+ 	if Difficulty = 2 then
+ 		ink 6
+ 		print "(Medium)"
+ 	endif 
+ 	if Difficulty = 3 then
+ 		ink 7
+ 		print "(Hard)"
+ 	endif  
+ 	ink 0
+ 	print 
+ 	print 
+ 	print "You have succeeded"
+ 	print "in communications"
+ 	print
+ 	print "There is nothing to do besides" 
+ 	print "wait for their next message"
+ 	Year = Year + 1
+ else
+ 	print "You failed to establish communications"
+ 	print "Tradeing has been ceased"
+ 	print
+ 	print "They used: ";
+ 	print TheirSound
+ 	print 
+ 	print "You tried: ";
+ 	print YourSound
+ endif
+ 
+ print
+ print
+ print
+ print
+ print
+ print
+ 
+ locate 23, 0
+ print "Press A to continue"
+ while joypad()=0: wend
+	waitpadup 0
+	print "press any key"
+'If the player won, do another round: else take them to game over
+ if YourSound = TheirSound then
+ 	if Difficulty = 1 then
+ 		goto EasyStart
+ 	endif
+ 	if Difficulty = 2 then
+ 		goto MediumStart
+ 	endif
+ 	if Difficulty = 3 then
+ 		goto HardStart
+ 	endif
+ else
+ 	goto GameOver
+ endif
+ 
+ 
+ 
+ 
+ 
+
+
+GameOver:
+	cls
+	sleep 30
+	print "You lasted ";
+	print Month;
+	print "'s"
+	print
+	print
+	print
+	print
+	print
+	print
+	print "Created By: ";
+	ink 2
+	print "Hunter Pearson"
+	ink 0
+	print
+	print
+	print
+	ink 7
+	print "                1-30-2016" 
+	ink 0
+	sleep 400
+	cls
+	
+	disable screen
+	loadtiles Credits,1120,128
+	pallettes CreditsColor,0,0,16
+	gosub draw
+	
+	sleep 300
+	pallettes palletted,0,0,16
+	cls
+	
+	print "Thank you for playing ";
+	print PlayerName$;
+	print "!"
+	sleep 200
+	goto FirstScreen
+	
